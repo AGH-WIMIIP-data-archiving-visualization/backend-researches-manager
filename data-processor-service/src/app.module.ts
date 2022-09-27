@@ -5,7 +5,6 @@ import { ProjectModule } from './project/project.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { configValidationSchema } from './config.schema';
-import { SingleResearch } from './single_research/single_research.entity';
 
 @Module({
   imports: [

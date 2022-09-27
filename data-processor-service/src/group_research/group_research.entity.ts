@@ -1,5 +1,12 @@
 import { SingleResearch } from 'src/single_research/single_research.entity';
-import { Column, Entity, ObjectID, ObjectIdColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ObjectID,
+  ObjectIdColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity()
 export class GroupResearch {
@@ -15,12 +22,12 @@ export class GroupResearch {
   @Column({ default: false })
   isPublic: boolean;
 
-  @Column({ type: 'timestamptz' })
-  createdAt: Date;
+  @CreateDateColumn()
+  createdAt!: Date;
 
-  @Column({ type: 'timestamptz' })
-  updatedAt: Date;
+  @UpdateDateColumn()
+  updatedAt!: Date;
 
-  @Column()
+  @Column((type) => SingleResearch)
   singleResearches: SingleResearch[];
 }

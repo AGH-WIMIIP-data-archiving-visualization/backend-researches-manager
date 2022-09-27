@@ -1,4 +1,10 @@
-import { Column, Entity, ObjectID, ObjectIdColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ObjectID,
+  ObjectIdColumn,
+  CreateDateColumn,
+} from 'typeorm';
 import { SingleRead } from './DTO/single_read.dto';
 
 @Entity()
@@ -15,9 +21,9 @@ export class SingleResearch {
   @Column({ default: false })
   isPublic: boolean;
 
-  @Column({ type: 'timestamptz' })
-  createdAt: Date;
+  @CreateDateColumn()
+  createdAt!: Date;
 
-  @Column()
+  @Column((type) => SingleRead)
   data: SingleRead[];
 }
