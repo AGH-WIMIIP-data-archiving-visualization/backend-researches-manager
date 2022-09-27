@@ -18,11 +18,11 @@ export class SingleResearch {
   @Column()
   singleResearchName: string;
 
-  @Column({ default: false })
+  @Column()
   isPublic: boolean;
 
   @CreateDateColumn()
-  createdAt!: Date;
+  createdAt: Date;
 
   @Column((type) => SingleRead)
   data: SingleRead[];
