@@ -1,4 +1,4 @@
 export class SingleRead {
   readNumber: number;
-  readVoltageBeforeScaling?: string;
+  readVoltageBeforeScaling: number;
 }
