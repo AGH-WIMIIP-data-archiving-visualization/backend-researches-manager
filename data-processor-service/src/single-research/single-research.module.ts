@@ -5,10 +5,10 @@ import {
   TypeOrmModule,
 } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
-import { SingleResearchController } from './single_research.controller';
-import { SingleResearch } from './single_research.entity';
-import { customSingleResearchRepositoryMethods } from './single_research.repository';
-import { SingleResearchService } from './single_research.service';
+import { SingleResearchController } from './single-research.controller';
+import { SingleResearch } from './single-research.entity';
+import { customSingleResearchRepositoryMethods } from './single-research.repository';
+import { SingleResearchService } from './single-research.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([SingleResearch])],

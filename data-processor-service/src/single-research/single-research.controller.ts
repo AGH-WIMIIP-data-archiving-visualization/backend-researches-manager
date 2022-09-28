@@ -1,8 +1,8 @@
 import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { CreateSingleResearchkDto } from './DTO/create-single-research.dto';
 import { SingleRead } from './DTO/single_read.dto';
-import { SingleResearch } from './single_research.entity';
-import { SingleResearchService } from './single_research.service';
+import { SingleResearch } from './single-research.entity';
+import { SingleResearchService } from './single-research.service';
 
 @Controller('single-research')
 export class SingleResearchController {

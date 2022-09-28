@@ -1,5 +1,5 @@
-import { GroupResearch } from 'src/group_research/group_research.entity';
-import { SingleResearch } from 'src/single_research/single_research.entity';
+import { GroupResearch } from 'src/group-research/group-research.entity';
+import { SingleResearch } from 'src/single-research/single-research.entity';
 import {
   Column,
   Entity,

@@ -1,4 +1,4 @@
-import { SingleResearch } from 'src/single_research/single_research.entity';
+import { SingleResearch } from 'src/single-research/single-research.entity';
 import {
   Column,
   Entity,

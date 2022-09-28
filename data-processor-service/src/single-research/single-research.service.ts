@@ -2,8 +2,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateSingleResearchkDto } from './DTO/create-single-research.dto';
 import { SingleRead } from './DTO/single_read.dto';
-import { SingleResearch } from './single_research.entity';
-import { SingleResearchRepository } from './single_research.repository';
+import { SingleResearch } from './single-research.entity';
+import { SingleResearchRepository } from './single-research.repository';
 @Injectable()
 export class SingleResearchService {
   constructor(

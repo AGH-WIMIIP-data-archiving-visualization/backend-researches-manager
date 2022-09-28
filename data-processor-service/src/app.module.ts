@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { SingleResearchModule } from './single_research/single_research.module';
-import { GroupResearchModule } from './group_research/group_research.module';
+import { SingleResearchModule } from './single-research/single-research.module';
+import { GroupResearchModule } from './group-research/group-research.module';
 import { ProjectModule } from './project/project.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';

@@ -1,6 +1,6 @@
 import { Repository } from 'typeorm';
 import { CreateSingleResearchkDto } from './DTO/create-single-research.dto';
-import { SingleResearch } from './single_research.entity';
+import { SingleResearch } from './single-research.entity';
 import { v4 as uuid } from 'uuid';
 
 export interface SingleResearchRepository extends Repository<SingleResearch> {
