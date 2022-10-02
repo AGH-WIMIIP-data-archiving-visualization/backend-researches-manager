@@ -1,7 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { SingleResearchService } from 'src/single-research/single-research.service';
+import { SingleResearch } from 'src/single-research/single-research.entity';
+import { SingleResearchRepository } from 'src/single-research/single-research.repository';
+import { groupResearchToGroupResearchResponseDto } from './Builder/researchGroupToResearchGroupDto';
 import { CreateGroupResearchkDto } from './DTO/create-group-research.dto';
+import { GroupResearchResponseDto } from './DTO/response-group-research.dto ';
 import { GroupResearch } from './group-research.entity';
 import { GroupResearchRepository } from './group-research.repository';
 
@@ -10,7 +13,9 @@ export class GroupResearchService {
   constructor(
     @InjectRepository(GroupResearch)
     private groupResearchRepository: GroupResearchRepository,
-    private singleResearchService: SingleResearchService,
+
+    @InjectRepository(SingleResearch)
+    private singleResearchRepository: SingleResearchRepository,
   ) {}
 
   async createGroupResearch(
@@ -20,8 +25,14 @@ export class GroupResearchService {
       createGrupupResearch,
     );
   }
-  async getAllGroupResearches(): Promise<GroupResearch[]> {
-    return this.groupResearchRepository.find();
+  async getAllGroupResearches(): Promise<GroupResearchResponseDto[]> {
+    const groupResearches = await this.groupResearchRepository.find();
+    const singleResearches = await this.singleResearchRepository.find();
+
+    return groupResearchToGroupResearchResponseDto(
+      groupResearches,
+      singleResearches,
+    );
   }
 
   async getGroupResearchById(id: string): Promise<GroupResearch> {
@@ -42,8 +53,9 @@ export class GroupResearchService {
   ): Promise<GroupResearch> {
     try {
       const researchGroup = await this.getGroupResearchById(groupID);
-      const singleResearch =
-        await this.singleResearchService.getSingleResearchById(singleID);
+      const singleResearch = await this.singleResearchRepository.findOne({
+        where: { id: singleID },
+      });
 
       if (researchGroup.singleResearchesIds) {
         if (!researchGroup.singleResearchesIds.includes(singleResearch.id)) {

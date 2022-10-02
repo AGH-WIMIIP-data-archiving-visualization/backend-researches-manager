@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
-import { SingleResearch } from 'src/single-research/single-research.entity';
 import { CreateGroupResearchkDto } from './DTO/create-group-research.dto';
+import { GroupResearchResponseDto } from './DTO/response-group-research.dto ';
 import { GroupResearch } from './group-research.entity';
 import { GroupResearchService } from './group_research.service';
 
@@ -16,12 +16,12 @@ export class GroupResearchController {
   }
 
   @Get()
-  getAllGroupResearches(): Promise<GroupResearch[]> {
+  getAllGroupResearches(): Promise<GroupResearchResponseDto[]> {
     return this.groupResearchService.getAllGroupResearches();
   }
 
   @Get('/:id')
-  getSingleResearchById(@Param('id') id: string): Promise<GroupResearch> {
+  getGroupResearchById(@Param('id') id: string): Promise<GroupResearch> {
     return this.groupResearchService.getGroupResearchById(id);
   }
 
