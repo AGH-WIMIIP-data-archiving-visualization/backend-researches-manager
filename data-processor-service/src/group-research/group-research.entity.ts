@@ -1,4 +1,3 @@
-import { SingleResearch } from 'src/single-research/single-research.entity';
 import {
   Column,
   Entity,
@@ -6,12 +5,16 @@ import {
   ObjectIdColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  PrimaryColumn,
 } from 'typeorm';
 
 @Entity()
 export class GroupResearch {
   @ObjectIdColumn()
-  id: ObjectID;
+  _id: ObjectID;
+
+  @PrimaryColumn()
+  id: string;
 
   @Column()
   groupResearchName: string;
@@ -19,7 +22,7 @@ export class GroupResearch {
   @Column()
   description: string;
 
-  @Column({ default: false })
+  @Column()
   isPublic: boolean;
 
   @CreateDateColumn()
@@ -28,6 +31,6 @@ export class GroupResearch {
   @UpdateDateColumn()
   updatedAt!: Date;
 
-  @Column((type) => SingleResearch)
-  singleResearches: SingleResearch[];
+  @Column()
+  singleResearchesIds: string[];
 }
