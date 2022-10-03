@@ -21,7 +21,9 @@ export class GroupResearchController {
   }
 
   @Get('/:id')
-  getGroupResearchById(@Param('id') id: string): Promise<GroupResearch> {
+  getGroupResearchById(
+    @Param('id') id: string,
+  ): Promise<GroupResearchResponseDto> {
     return this.groupResearchService.getGroupResearchById(id);
   }
 

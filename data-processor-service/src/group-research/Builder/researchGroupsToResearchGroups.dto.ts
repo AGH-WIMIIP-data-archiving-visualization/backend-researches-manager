@@ -2,7 +2,7 @@ import { SingleResearch } from 'src/single-research/single-research.entity';
 import { GroupResearchResponseDto } from '../DTO/response-group-research.dto ';
 import { GroupResearch } from '../group-research.entity';
 
-export const groupResearchToGroupResearchResponseDto = (
+export const groupsResearchToGroupsResearchResponseDto = (
   groupResearch: GroupResearch[],
   singleResearches: SingleResearch[],
 ): GroupResearchResponseDto[] => {

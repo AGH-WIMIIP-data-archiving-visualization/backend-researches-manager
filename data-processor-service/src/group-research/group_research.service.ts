@@ -2,7 +2,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { SingleResearch } from 'src/single-research/single-research.entity';
 import { SingleResearchRepository } from 'src/single-research/single-research.repository';
-import { groupResearchToGroupResearchResponseDto } from './Builder/researchGroupToResearchGroupDto';
+import { groupsResearchToGroupsResearchResponseDto } from './Builder/researchGroupsToResearchGroups.dto';
+import { groupResearchToGroupResearchResponseDto } from './Builder/researchGroupToResearchGroup.dto';
 import { CreateGroupResearchkDto } from './DTO/create-group-research.dto';
 import { GroupResearchResponseDto } from './DTO/response-group-research.dto ';
 import { GroupResearch } from './group-research.entity';
@@ -29,22 +30,24 @@ export class GroupResearchService {
     const groupResearches = await this.groupResearchRepository.find();
     const singleResearches = await this.singleResearchRepository.find();
 
-    return groupResearchToGroupResearchResponseDto(
+    return groupsResearchToGroupsResearchResponseDto(
       groupResearches,
       singleResearches,
     );
   }
 
-  async getGroupResearchById(id: string): Promise<GroupResearch> {
+  async getGroupResearchById(id: string): Promise<GroupResearchResponseDto> {
     const found = await this.groupResearchRepository.findOne({
       where: { id: id },
     });
+    const singleResearches = await this.singleResearchRepository.find();
+
     if (!found) {
       throw new NotFoundException(
         `Group of researches with ${id} id does not extist`,
       );
     }
-    return found;
+    return groupResearchToGroupResearchResponseDto(found, singleResearches);
   }
 
   async insertSingleResearchToGroup(
@@ -52,8 +55,10 @@ export class GroupResearchService {
     singleID: string,
   ): Promise<GroupResearch> {
     try {
-      const researchGroup = await this.getGroupResearchById(groupID);
-      const singleResearch = await this.singleResearchRepository.findOne({
+      const researchGroup = await this.groupResearchRepository.findOneOrFail({
+        where: { id: groupID },
+      });
+      const singleResearch = await this.singleResearchRepository.findOneOrFail({
         where: { id: singleID },
       });
 
