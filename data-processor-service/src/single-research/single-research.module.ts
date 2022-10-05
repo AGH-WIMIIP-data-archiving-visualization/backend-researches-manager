@@ -26,6 +26,5 @@ import { SingleResearchService } from './single-research.service';
     },
     SingleResearchService,
   ],
-  exports: [SingleResearchService],
 })
 export class SingleResearchModule {}

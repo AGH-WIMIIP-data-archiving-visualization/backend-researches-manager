@@ -7,13 +7,16 @@ import {
   ObjectIdColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  PrimaryColumn,
 } from 'typeorm';
 
 @Entity()
 export class Project {
   @ObjectIdColumn()
-  id: ObjectID;
+  _id: ObjectID;
 
+  @PrimaryColumn()
+  id: string;
   @Column()
   projectName: string;
 
@@ -29,9 +32,9 @@ export class Project {
   @UpdateDateColumn()
   updatedAt!: Date;
 
-  @Column((type) => GroupResearch)
-  groupsResearches: GroupResearch[];
+  @Column()
+  groupsResearchIds: string[];
 
-  @Column((type) => SingleResearch)
-  singleResearches: SingleResearch[];
+  @Column()
+  singleResearchesIds: string[];
 }
