@@ -1,10 +1,20 @@
-import { Column, Entity, ObjectID, ObjectIdColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ObjectID,
+  ObjectIdColumn,
+  CreateDateColumn,
+  PrimaryColumn,
+} from 'typeorm';
 import { SingleRead } from './DTO/single_read.dto';
 
 @Entity()
 export class SingleResearch {
   @ObjectIdColumn()
-  id: ObjectID;
+  _id: string;
+
+  @PrimaryColumn()
+  id: string;
 
   @Column()
   deviceName: string;
@@ -12,10 +22,10 @@ export class SingleResearch {
   @Column()
   singleResearchName: string;
 
-  @Column({ default: false })
+  @Column()
   isPublic: boolean;
 
-  @Column({ type: 'timestamptz' })
+  @CreateDateColumn()
   createdAt: Date;
 
   @Column()
