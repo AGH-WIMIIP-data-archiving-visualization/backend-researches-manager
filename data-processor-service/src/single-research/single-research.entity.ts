@@ -17,6 +17,9 @@ export class SingleResearch {
   id: string;
 
   @Column()
+  authUserId: string;
+
+  @Column()
   deviceName: string;
 
   @Column()
