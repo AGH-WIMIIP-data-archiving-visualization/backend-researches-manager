@@ -1,4 +1,4 @@
-import { GroupResearchResponseDto } from 'src/group-research/DTO/response-group-research.dto ';
+import { GroupResearch } from 'src/group-research/group-research.entity';
 import { SingleResearch } from 'src/single-research/single-research.entity';
 import { ObjectID } from 'typeorm';
 
@@ -17,7 +17,7 @@ export class ProjectResponseDto {
 
   updatedAt!: Date;
 
-  groupsResearch: GroupResearchResponseDto[];
+  groupsResearch: GroupResearch[];
 
   singleResearches: SingleResearch[];
 }
