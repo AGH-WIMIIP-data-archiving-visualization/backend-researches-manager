@@ -17,6 +17,10 @@ export class Project {
 
   @PrimaryColumn()
   id: string;
+
+  @Column()
+  authUserId: string;
+
   @Column()
   projectName: string;
 

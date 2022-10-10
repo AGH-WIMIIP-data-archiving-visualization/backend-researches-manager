@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { UserPayload } from 'src/authorization/authorization.decorator';
 import { SingleResearch } from 'src/single-research/single-research.entity';
 import { SingleResearchRepository } from 'src/single-research/single-research.repository';
 import { groupsResearchToGroupsResearchResponseDto } from './Builder/researchGroupsToResearchGroups.dto';
@@ -21,14 +22,22 @@ export class GroupResearchService {
 
   async createGroupResearch(
     createGrupupResearch: CreateGroupResearchkDto,
+    user: UserPayload,
   ): Promise<GroupResearch> {
     return this.groupResearchRepository.createGroupResearch(
       createGrupupResearch,
+      user,
     );
   }
-  async getAllGroupResearches(): Promise<GroupResearchResponseDto[]> {
-    const groupResearches = await this.groupResearchRepository.find();
-    const singleResearches = await this.singleResearchRepository.find();
+  async getAllGroupResearches(
+    user: UserPayload,
+  ): Promise<GroupResearchResponseDto[]> {
+    const groupResearches = await this.groupResearchRepository.find({
+      where: { authUserId: user.sub },
+    });
+    const singleResearches = await this.singleResearchRepository.find({
+      where: { authUserId: user.sub },
+    });
 
     return groupsResearchToGroupsResearchResponseDto(
       groupResearches,
@@ -36,11 +45,16 @@ export class GroupResearchService {
     );
   }
 
-  async getGroupResearchById(id: string): Promise<GroupResearchResponseDto> {
+  async getGroupResearchById(
+    id: string,
+    user: UserPayload,
+  ): Promise<GroupResearchResponseDto> {
     const found = await this.groupResearchRepository.findOne({
-      where: { id: id },
+      where: { id: id, authUserId: user.sub },
     });
-    const singleResearches = await this.singleResearchRepository.find();
+    const singleResearches = await this.singleResearchRepository.find({
+      where: { authUserId: user.sub },
+    });
 
     if (!found) {
       throw new NotFoundException(
@@ -53,13 +67,14 @@ export class GroupResearchService {
   async insertSingleResearchToGroup(
     groupID: string,
     singleID: string,
+    user: UserPayload,
   ): Promise<GroupResearch> {
     try {
       const researchGroup = await this.groupResearchRepository.findOneOrFail({
-        where: { id: groupID },
+        where: { id: groupID, authUserId: user.sub },
       });
       const singleResearch = await this.singleResearchRepository.findOneOrFail({
-        where: { id: singleID },
+        where: { id: singleID, authUserId: user.sub },
       });
 
       if (researchGroup.singleResearchesIds) {

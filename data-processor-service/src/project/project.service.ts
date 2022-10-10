@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { UserPayload } from 'src/authorization/authorization.decorator';
 import { GroupResearch } from 'src/group-research/group-research.entity';
 import { GroupResearchRepository } from 'src/group-research/group-research.repository';
 import { SingleResearch } from 'src/single-research/single-research.entity';
@@ -21,12 +22,17 @@ export class ProjectService {
     private singleResearchRepository: SingleResearchRepository,
   ) {}
 
-  async createProject(createProject: CreateProjectDto): Promise<Project> {
-    return this.projectRepository.createProject(createProject);
+  async createProject(
+    createProject: CreateProjectDto,
+    user: UserPayload,
+  ): Promise<Project> {
+    return this.projectRepository.createProject(createProject, user);
   }
 
-  async getAllProjects(): Promise<Project[]> {
-    const projects = await this.projectRepository.find();
+  async getAllProjects(user: UserPayload): Promise<Project[]> {
+    const projects = await this.projectRepository.find({
+      where: { authUserId: user.sub },
+    });
     return projects;
   }
 }
