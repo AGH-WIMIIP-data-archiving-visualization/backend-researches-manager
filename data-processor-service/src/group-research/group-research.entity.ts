@@ -17,6 +17,9 @@ export class GroupResearch {
   id: string;
 
   @Column()
+  authUserId: string;
+
+  @Column()
   groupResearchName: string;
 
   @Column()

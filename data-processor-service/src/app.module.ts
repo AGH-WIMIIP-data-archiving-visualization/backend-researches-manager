@@ -5,16 +5,17 @@ import { ProjectModule } from './project/project.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { configValidationSchema } from './config.schema';
-
+import { AuthorizationModule } from './authorization/authorization.module';
 @Module({
   imports: [
-    SingleResearchModule,
-    GroupResearchModule,
-    ProjectModule,
     ConfigModule.forRoot({
       envFilePath: [`.env.stage.${process.env.STAGE}`],
       validationSchema: configValidationSchema,
     }),
+    SingleResearchModule,
+    GroupResearchModule,
+    ProjectModule,
+    AuthorizationModule,
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
