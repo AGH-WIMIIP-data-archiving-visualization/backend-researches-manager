@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { CreateProjectDto } from './DTO/create-project.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { Project } from './project.entity';
@@ -7,6 +15,7 @@ import {
   GetUser,
   UserPayload,
 } from 'src/authorization/authorization.decorator';
+import { ProjectResponseDto } from './DTO/response-project.dto';
 
 @Controller('project')
 export class ProjectController {
@@ -25,5 +34,42 @@ export class ProjectController {
   @Get()
   getAllProjects(@GetUser() user: UserPayload): Promise<Project[]> {
     return this.projectService.getAllProjects(user);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/:id')
+  getProjectId(
+    @Param('id') id: string,
+    @GetUser() user: UserPayload,
+  ): Promise<ProjectResponseDto> {
+    return this.projectService.getProjectId(id, user);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Patch('/:projectID/single-research/:singleID')
+  insertSingleResearchToProject(
+    @Param('projectID') projectID: string,
+    @Param('singleID') singleID: string,
+    @GetUser() user: UserPayload,
+  ): Promise<Project> {
+    return this.projectService.insertSingleResearchToProject(
+      projectID,
+      singleID,
+      user,
+    );
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Patch('/:projectID/group-research/:groupID')
+  insertGroupResearchToProject(
+    @Param('projectID') projectID: string,
+    @Param('groupID') groupID: string,
+    @GetUser() user: UserPayload,
+  ): Promise<Project> {
+    return this.projectService.insertGroupResearchToProject(
+      projectID,
+      groupID,
+      user,
+    );
   }
 }
