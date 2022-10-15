@@ -1,6 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserPayload } from 'src/authorization/authorization.decorator';
+import { Project } from 'src/project/project.entity';
+import { ProjectRepository } from 'src/project/project.repository';
 import { SingleResearch } from 'src/single-research/single-research.entity';
 import { SingleResearchRepository } from 'src/single-research/single-research.repository';
 import { groupsResearchToGroupsResearchResponseDto } from './Builder/researchGroupsToResearchGroups.dto';
@@ -13,6 +15,9 @@ import { GroupResearchRepository } from './group-research.repository';
 @Injectable()
 export class GroupResearchService {
   constructor(
+    @InjectRepository(Project)
+    private projectRepository: ProjectRepository,
+
     @InjectRepository(GroupResearch)
     private groupResearchRepository: GroupResearchRepository,
 
@@ -32,9 +37,20 @@ export class GroupResearchService {
   async getAllGroupResearches(
     user: UserPayload,
   ): Promise<GroupResearchResponseDto[]> {
-    const groupResearches = await this.groupResearchRepository.find({
-      where: { authUserId: user.sub },
-    });
+    const project = (
+      await this.projectRepository.find({
+        where: { authUserId: user.sub },
+      })
+    )
+      .map((e) => e.groupsResearchIds)
+      .flat(1);
+
+    const groupResearches = (
+      await this.groupResearchRepository.find({
+        where: { authUserId: user.sub },
+      })
+    ).filter((e) => project.includes(e.id));
+
     const singleResearches = await this.singleResearchRepository.find({
       where: { authUserId: user.sub },
     });
