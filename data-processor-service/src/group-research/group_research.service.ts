@@ -49,8 +49,7 @@ export class GroupResearchService {
       await this.groupResearchRepository.find({
         where: { authUserId: user.sub },
       })
-    ).filter((e) => project.includes(e.id));
-
+    ).filter((e) => !project.includes(e.id));
     const singleResearches = await this.singleResearchRepository.find({
       where: { authUserId: user.sub },
     });
