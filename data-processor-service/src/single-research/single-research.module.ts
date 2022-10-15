@@ -4,6 +4,8 @@ import {
   getRepositoryToken,
   TypeOrmModule,
 } from '@nestjs/typeorm';
+import { GroupResearch } from 'src/group-research/group-research.entity';
+import { Project } from 'src/project/project.entity';
 import { DataSource } from 'typeorm';
 import { SingleResearchController } from './single-research.controller';
 import { SingleResearch } from './single-research.entity';
@@ -11,7 +13,7 @@ import { customSingleResearchRepositoryMethods } from './single-research.reposit
 import { SingleResearchService } from './single-research.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([SingleResearch])],
+  imports: [TypeOrmModule.forFeature([Project, GroupResearch, SingleResearch])],
   controllers: [SingleResearchController],
 
   providers: [
