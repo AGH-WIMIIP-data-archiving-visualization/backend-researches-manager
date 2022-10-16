@@ -1,34 +1,70 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Table of contents
 
-## Getting Started
+- [About project](#about-project)
+- [Getting started](#getting-started)
+- [Envs](#envs)
+- [Libraries and Technology Stack](#libraries-and-technology-stack)
+- [Project Screenshots](#added-library)
 
-First, run the development server:
+# About project
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+This project was created for recruitment at IG GROUP as Junior Frontend Developer. The program uses a simple rest API to fetch data and display tables with data. Aplication is full responsive.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+# Getting started
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+1. Download repo
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+   ```sh
+   git clone https://github.com/Hepsko/ig_group_recruitment.git
+   ```
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+2. Install dependencies
+   ```sh
+   npm i
+   ```
+3. **_!IMPORTANT_** Create **_.env.local_** in main folder, this file must contain yout API KEY!!
 
-## Learn More
+   ```sh
+   NEXT_PUBLIC_API_KEY = "API_KEY"
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+4. Run tests
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+   ```sh
+   npm run test
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+5. Run App
+   ```sh
+   npm run dev
+   ```
 
-## Deploy on Vercel
+# Envs
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Although the project is simple, API keys should not be stored in the repository. Therefore, the project requires the creation of its own file env. local
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+# Libraries and Technology Stack
+
+**_- NextJS_** - Although the project doesn’t need all the technologies that are included in nextjs, I think it’s a good practice to generate a new project with nextjs, it’s much more scaled than a “create-react-app” It might as well be possible to rebuild the whole project from scratch, but it would be more laborious.
+
+**_- Axios_** - Promised-based HTTP client for JavaScript
+
+**_- React Query_** - data-fetching library for React. Makes it easy to manage application state and helps you avoid boilerplate
+
+**_- StyledComponents_** - Component styling library
+
+**_- Antd design_** - Package with components, speeds up work when design is not in the first place
+
+**_- Jest_** - Library for testing
+
+# Project Screenshots
+
+## Desktop
+
+![desktop 1](/public/screenshots/desktop1.png)
+![desktop 2](/public/screenshots/desktop2.png)
+
+## Mobile
+
+![mobile 1](/public/screenshots/mobile1.png)
+![mobile 2](/public/screenshots/mobile2.png)
