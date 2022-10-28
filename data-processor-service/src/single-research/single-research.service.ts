@@ -6,7 +6,7 @@ import { GroupResearchRepository } from 'src/group-research/group-research.repos
 import { Project } from 'src/project/project.entity';
 import { ProjectRepository } from 'src/project/project.repository';
 import { CreateSingleResearchkDto } from './DTO/create-single-research.dto';
-import { SingleRead } from './DTO/single_read.dto';
+import { SingleRead } from './DTO/single-read.dto';
 import { SingleResearch } from './single-research.entity';
 import { SingleResearchRepository } from './single-research.repository';
 @Injectable()
@@ -69,7 +69,7 @@ export class SingleResearchService {
     return found;
   }
 
-  async insertDataToSingleResearch(
+  async conductLabjackResearch(
     id: string,
     data: SingleRead[],
     user: UserPayload,

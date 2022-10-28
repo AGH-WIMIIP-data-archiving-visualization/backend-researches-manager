@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  OnModuleInit,
   Param,
   Patch,
   Post,
@@ -12,14 +13,39 @@ import {
   UserPayload,
 } from 'src/authorization/authorization.decorator';
 import { CreateSingleResearchkDto } from './DTO/create-single-research.dto';
-import { SingleRead } from './DTO/single_read.dto';
 import { SingleResearch } from './single-research.entity';
 import { SingleResearchService } from './single-research.service';
 import { AuthGuard } from '@nestjs/passport';
+import { Client, ClientGrpc } from '@nestjs/microservices';
+import { labjackConnectorClientOptions } from '../microsevices/labjack-connector-client';
+import {
+  LabjackConnectorService,
+  LabjackConnectorResponse,
+  LabjackConnectorInput,
+} from 'proto/build/labjack-connector';
 
 @Controller('single-research')
-export class SingleResearchController {
+export class SingleResearchController implements OnModuleInit {
+  @Client(labjackConnectorClientOptions)
+  private readonly client1: ClientGrpc;
+  private labjackConnectorService: LabjackConnectorService;
+
   constructor(private singleResearchService: SingleResearchService) {}
+
+  onModuleInit() {
+    this.labjackConnectorService =
+      this.client1.getService<LabjackConnectorService>(
+        'LabjackConnectorService',
+      );
+  }
+
+  @Get('grpcTest')
+  getLabjackData(): Promise<LabjackConnectorResponse> {
+    return this.labjackConnectorService.GetLabjackData({
+      analogInputNo: 1,
+      duration: 200,
+    });
+  }
 
   @UseGuards(AuthGuard('jwt'))
   @Get()
@@ -50,15 +76,19 @@ export class SingleResearchController {
     );
   }
   @UseGuards(AuthGuard('jwt'))
-  @Patch('/:id/data')
-  insertDataToSingleResearch(
+  @Patch('/:id/research')
+  async conductLabjackResearch(
     @GetUser() user: UserPayload,
     @Param('id') id: string,
-    @Body() data: SingleRead[],
+    @Body() labjackConnectorInput: LabjackConnectorInput,
   ): Promise<SingleResearch> {
-    return this.singleResearchService.insertDataToSingleResearch(
+    const researchData = (
+      await this.labjackConnectorService.GetLabjackData(labjackConnectorInput)
+    ).response;
+
+    return this.singleResearchService.conductLabjackResearch(
       id,
-      data,
+      researchData,
       user,
     );
   }
