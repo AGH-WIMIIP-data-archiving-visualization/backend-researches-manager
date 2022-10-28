@@ -6,7 +6,7 @@ import {
   CreateDateColumn,
   PrimaryColumn,
 } from 'typeorm';
-import { SingleRead } from './DTO/single_read.dto';
+import { SingleRead } from './DTO/single-read.dto';
 
 @Entity()
 export class SingleResearch {
