@@ -42,8 +42,8 @@ export class SingleResearchController implements OnModuleInit {
   @Get('grpcTest')
   getLabjackData(): Promise<LabjackConnectorResponse> {
     return this.labjackConnectorService.GetLabjackData({
-      analogInputNo: 1,
-      duration: 200,
+      analogInputNo: 0,
+      duration: 10,
     });
   }
 

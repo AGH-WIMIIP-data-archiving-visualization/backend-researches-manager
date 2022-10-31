@@ -16,6 +16,7 @@ import {
   UserPayload,
 } from 'src/authorization/authorization.decorator';
 import { ProjectResponseDto } from './DTO/response-project.dto';
+import { ApiCreatedResponse } from '@nestjs/swagger';
 
 @Controller('project')
 export class ProjectController {
@@ -30,12 +31,19 @@ export class ProjectController {
     return this.projectService.createProject(createProject, user);
   }
 
+  @ApiCreatedResponse({
+    isArray: true,
+    type: Project,
+  })
   @UseGuards(AuthGuard('jwt'))
   @Get()
   getAllProjects(@GetUser() user: UserPayload): Promise<Project[]> {
     return this.projectService.getAllProjects(user);
   }
 
+  @ApiCreatedResponse({
+    type: ProjectResponseDto,
+  })
   @UseGuards(AuthGuard('jwt'))
   @Get('/:id')
   getProjectId(
