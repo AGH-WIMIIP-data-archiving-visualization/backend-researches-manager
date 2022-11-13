@@ -1,5 +1,6 @@
-import { GroupResearch } from 'src/group-research/group-research.entity';
-import { SingleResearch } from 'src/single-research/single-research.entity';
+import { ApiProperty } from '@nestjs/swagger';
+import { Exclude } from 'class-transformer';
+
 import {
   Column,
   Entity,
@@ -13,32 +14,42 @@ import {
 @Entity()
 export class Project {
   @ObjectIdColumn()
+  @Exclude({ toPlainOnly: true })
   _id: ObjectID;
 
+  @ApiProperty()
   @PrimaryColumn()
   id: string;
 
   @Column()
+  @Exclude({ toPlainOnly: true })
   authUserId: string;
 
+  @ApiProperty()
   @Column()
   projectName: string;
 
+  @ApiProperty()
   @Column()
   description: string;
 
+  @ApiProperty()
   @Column({ default: false })
   isPublic: boolean;
 
+  @ApiProperty()
   @CreateDateColumn()
   createdAt!: Date;
 
+  @ApiProperty()
   @UpdateDateColumn()
   updatedAt!: Date;
 
+  @Exclude({ toPlainOnly: true })
   @Column()
   groupsResearchIds: string[];
 
+  @Exclude({ toPlainOnly: true })
   @Column()
   singleResearchesIds: string[];
 }
