@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import {
@@ -23,6 +24,8 @@ import {
   LabjackConnectorResponse,
   LabjackConnectorInput,
 } from 'proto/build/labjack-connector';
+import { SingleRead } from './DTO/single-read.dto';
+import { date } from '@hapi/joi';
 
 @Controller('single-research')
 export class SingleResearchController implements OnModuleInit {
@@ -39,12 +42,11 @@ export class SingleResearchController implements OnModuleInit {
       );
   }
 
-  @Get('grpcTest')
-  getLabjackData(): Promise<LabjackConnectorResponse> {
-    return this.labjackConnectorService.GetLabjackData({
-      analogInputNo: 0,
-      duration: 10,
-    });
+  @Get('labjack-1')
+  getLabjackData(
+    @Query() labjackConnectorInput: LabjackConnectorInput,
+  ): Promise<LabjackConnectorResponse> {
+    return this.labjackConnectorService.GetLabjackData(labjackConnectorInput);
   }
 
   @UseGuards(AuthGuard('jwt'))
@@ -76,16 +78,12 @@ export class SingleResearchController implements OnModuleInit {
     );
   }
   @UseGuards(AuthGuard('jwt'))
-  @Patch('/:id/research')
+  @Patch('/:id')
   async conductLabjackResearch(
     @GetUser() user: UserPayload,
     @Param('id') id: string,
-    @Body() labjackConnectorInput: LabjackConnectorInput,
+    @Body() researchData: SingleRead[],
   ): Promise<SingleResearch> {
-    const researchData = (
-      await this.labjackConnectorService.GetLabjackData(labjackConnectorInput)
-    ).response;
-
     return this.singleResearchService.conductLabjackResearch(
       id,
       researchData,
