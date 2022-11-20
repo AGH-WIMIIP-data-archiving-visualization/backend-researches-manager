@@ -76,7 +76,7 @@ export class SingleResearchService {
   ): Promise<SingleResearch> {
     const research = await this.getSingleResearchById(id, user);
 
-    research.data = data['data'];
+    research.data = data;
     await this.singleResearchRepository.save(research);
     return research;
   }
