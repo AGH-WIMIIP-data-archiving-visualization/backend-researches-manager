@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   OnModuleInit,
   Param,
@@ -25,8 +26,9 @@ import {
   LabjackConnectorInput,
 } from 'proto/build/labjack-connector';
 import { SingleRead } from './DTO/single-read.dto';
-import { date } from '@hapi/joi';
+import { ConductLabjackResearchDto } from './DTO/conduct-labjack-research.dto';
 
+@UseGuards(AuthGuard('jwt'))
 @Controller('single-research')
 export class SingleResearchController implements OnModuleInit {
   @Client(labjackConnectorClientOptions)
@@ -49,7 +51,6 @@ export class SingleResearchController implements OnModuleInit {
     return this.labjackConnectorService.GetLabjackData(labjackConnectorInput);
   }
 
-  @UseGuards(AuthGuard('jwt'))
   @Get()
   getAllSingleResearches(
     @GetUser() user: UserPayload,
@@ -57,7 +58,6 @@ export class SingleResearchController implements OnModuleInit {
     return this.singleResearchService.getAllSingleResearches(user);
   }
 
-  @UseGuards(AuthGuard('jwt'))
   @Get('/:id')
   getSingleResearchById(
     @GetUser() user: UserPayload,
@@ -66,7 +66,6 @@ export class SingleResearchController implements OnModuleInit {
     return this.singleResearchService.getSingleResearchById(id, user);
   }
 
-  @UseGuards(AuthGuard('jwt'))
   @Post()
   createSingleResearch(
     @GetUser() user: UserPayload,
@@ -77,17 +76,24 @@ export class SingleResearchController implements OnModuleInit {
       user,
     );
   }
-  @UseGuards(AuthGuard('jwt'))
   @Patch('/:id')
   async conductLabjackResearch(
     @GetUser() user: UserPayload,
     @Param('id') id: string,
-    @Body() researchData: SingleRead[],
+    @Body() conductLabjackResearchDto: ConductLabjackResearchDto,
   ): Promise<SingleResearch> {
     return this.singleResearchService.conductLabjackResearch(
       id,
-      researchData,
+      conductLabjackResearchDto,
       user,
     );
+  }
+
+  @Delete('/:id')
+  deleteResearchById(
+    @Param('id') id: string,
+    @GetUser() user: UserPayload,
+  ): Promise<void> {
+    return this.singleResearchService.deleteResearchById(id, user);
   }
 }

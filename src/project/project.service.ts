@@ -124,4 +124,31 @@ export class ProjectService {
       throw new NotFoundException(`Group or Single research  does not extist`);
     }
   }
+
+  async deleteProjectById(id: string, user: UserPayload): Promise<void> {
+    const project = await this.getProjectId(id, user);
+
+    project.singleResearches.forEach(async (e) => {
+      await this.singleResearchRepository.delete({
+        authUserId: user.sub,
+        id: e.id,
+      });
+    });
+
+    project.groupsResearch.forEach(async (e) => {
+      await this.groupResearchRepository.delete({
+        authUserId: user.sub,
+        id: e.id,
+      });
+    });
+
+    const result = await this.projectRepository.delete({
+      authUserId: user.sub,
+      id: id,
+    });
+
+    if (result.affected === 0) {
+      throw new NotFoundException(`Project with Id ${id} not found `);
+    }
+  }
 }

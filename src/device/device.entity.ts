@@ -1,46 +1,37 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
+
 import {
   Column,
   Entity,
   ObjectID,
   ObjectIdColumn,
-  CreateDateColumn,
   PrimaryColumn,
 } from 'typeorm';
-import { SingleRead } from './DTO/single-read.dto';
 
 @Entity()
-export class SingleResearch {
+export class Device {
   @ObjectIdColumn()
   @Exclude({ toPlainOnly: true })
-  _id: string;
+  _id: ObjectID;
 
   @ApiProperty()
   @PrimaryColumn()
   id: string;
 
+  @ApiProperty()
   @Column()
-  @Exclude({ toPlainOnly: true })
-  authUserId: string;
+  deviceName: string;
 
   @ApiProperty()
   @Column()
-  deviceName?: string;
+  scalingFunction: string;
 
   @ApiProperty()
   @Column()
-  singleResearchName: string;
+  unit: string;
 
   @ApiProperty()
   @Column()
-  isPublic: boolean;
-
-  @ApiProperty()
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @ApiProperty({ isArray: true, type: SingleRead })
-  @Column()
-  data: SingleRead[];
+  deviceInput: number;
 }

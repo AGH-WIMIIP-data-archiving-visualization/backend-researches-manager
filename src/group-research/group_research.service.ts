@@ -109,4 +109,24 @@ export class GroupResearchService {
       throw new NotFoundException(`Group or Single research  does not extist`);
     }
   }
+
+  async deleteGroupById(id: string, user: UserPayload): Promise<void> {
+    const group = await this.getGroupResearchById(id, user);
+
+    group.singleResearches.forEach(async (e) => {
+      await this.singleResearchRepository.delete({
+        authUserId: user.sub,
+        id: e.id,
+      });
+    });
+
+    const result = await this.groupResearchRepository.delete({
+      authUserId: user.sub,
+      id: id,
+    });
+
+    if (result.affected === 0) {
+      throw new NotFoundException(`Group with Id ${id} not found `);
+    }
+  }
 }

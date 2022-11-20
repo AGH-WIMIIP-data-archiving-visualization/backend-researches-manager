@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -17,11 +18,11 @@ import { GroupResearchResponseDto } from './DTO/response-group-research.dto ';
 import { GroupResearch } from './group-research.entity';
 import { GroupResearchService } from './group_research.service';
 
+@UseGuards(AuthGuard('jwt'))
 @Controller('group-research')
 export class GroupResearchController {
   constructor(private groupResearchService: GroupResearchService) {}
 
-  @UseGuards(AuthGuard('jwt'))
   @Post()
   createGroupeResearch(
     @Body() createGroupResearch: CreateGroupResearchkDto,
@@ -33,7 +34,6 @@ export class GroupResearchController {
     );
   }
 
-  @UseGuards(AuthGuard('jwt'))
   @Get()
   getAllGroupResearches(
     @GetUser() user: UserPayload,
@@ -41,7 +41,6 @@ export class GroupResearchController {
     return this.groupResearchService.getAllGroupResearches(user);
   }
 
-  @UseGuards(AuthGuard('jwt'))
   @Get('/:id')
   getGroupResearchById(
     @Param('id') id: string,
@@ -50,7 +49,6 @@ export class GroupResearchController {
     return this.groupResearchService.getGroupResearchById(id, user);
   }
 
-  @UseGuards(AuthGuard('jwt'))
   @Patch('/:groupID/single-research/:singleID')
   insertSingleResearchToGroup(
     @Param('groupID') groupID: string,
@@ -62,5 +60,13 @@ export class GroupResearchController {
       singleID,
       user,
     );
+  }
+
+  @Delete('/:id')
+  deleteGroupById(
+    @Param('id') id: string,
+    @GetUser() user: UserPayload,
+  ): Promise<void> {
+    return this.groupResearchService.deleteGroupById(id, user);
   }
 }
