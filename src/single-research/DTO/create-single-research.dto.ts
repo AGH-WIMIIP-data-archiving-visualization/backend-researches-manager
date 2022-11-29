@@ -4,10 +4,6 @@ import { IsNotEmpty, IsBoolean } from 'class-validator';
 export class CreateSingleResearchkDto {
   @IsNotEmpty()
   @ApiProperty()
-  deviceName: string;
-
-  @IsNotEmpty()
-  @ApiProperty()
   singleResearchName: string;
 
   @IsNotEmpty()

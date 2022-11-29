@@ -19,11 +19,10 @@ export const customSingleResearchRepositoryMethods: Pick<
     createSingleResearch: CreateSingleResearchkDto,
     user: UserPayload,
   ): Promise<SingleResearch> {
-    const { deviceName, isPublic, singleResearchName } = createSingleResearch;
+    const { isPublic, singleResearchName } = createSingleResearch;
 
     const singleResearch = this.create({
       id: uuid(),
-      deviceName: deviceName,
       authUserId: user.sub,
       isPublic: isPublic,
       singleResearchName: singleResearchName,
