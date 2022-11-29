@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { configValidationSchema } from './config.schema';
 import { AuthorizationModule } from './authorization/authorization.module';
+import { DeviceModule } from './device/device.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -31,6 +32,7 @@ import { AuthorizationModule } from './authorization/authorization.module';
         autoLoadEntities: true,
       }),
     }),
+    DeviceModule,
   ],
   controllers: [],
   providers: [],

@@ -5,8 +5,8 @@ import { GroupResearch } from 'src/group-research/group-research.entity';
 import { GroupResearchRepository } from 'src/group-research/group-research.repository';
 import { Project } from 'src/project/project.entity';
 import { ProjectRepository } from 'src/project/project.repository';
+import { ConductLabjackResearchDto } from './DTO/conduct-labjack-research.dto';
 import { CreateSingleResearchkDto } from './DTO/create-single-research.dto';
-import { SingleRead } from './DTO/single-read.dto';
 import { SingleResearch } from './single-research.entity';
 import { SingleResearchRepository } from './single-research.repository';
 @Injectable()
@@ -71,13 +71,28 @@ export class SingleResearchService {
 
   async conductLabjackResearch(
     id: string,
-    data: SingleRead[],
+    conductLabjackResearchDto: ConductLabjackResearchDto,
     user: UserPayload,
   ): Promise<SingleResearch> {
     const research = await this.getSingleResearchById(id, user);
 
-    research.data = data;
+    research.data = conductLabjackResearchDto.data;
+    research.deviceName = conductLabjackResearchDto.deviceName;
+    research.scalingFunction = conductLabjackResearchDto.scalingFunction;
+    research.unit = conductLabjackResearchDto.unit;
+
     await this.singleResearchRepository.save(research);
     return research;
+  }
+
+  async deleteResearchById(id: string, user: UserPayload): Promise<void> {
+    const result = await this.singleResearchRepository.delete({
+      authUserId: user.sub,
+      id: id,
+    });
+
+    if (result.affected === 0) {
+      throw new NotFoundException(`Research with Id ${id} not found `);
+    }
   }
 }
