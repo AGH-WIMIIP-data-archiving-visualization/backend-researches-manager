@@ -9,6 +9,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiCreatedResponse } from '@nestjs/swagger';
 import {
   GetUser,
   UserPayload,
@@ -34,6 +35,10 @@ export class GroupResearchController {
     );
   }
 
+  @ApiCreatedResponse({
+    isArray: true,
+    type: GroupResearchResponseDto,
+  })
   @Get()
   getAllGroupResearches(
     @GetUser() user: UserPayload,
@@ -41,6 +46,9 @@ export class GroupResearchController {
     return this.groupResearchService.getAllGroupResearches(user);
   }
 
+  @ApiCreatedResponse({
+    type: GroupResearchResponseDto,
+  })
   @Get('/:id')
   getGroupResearchById(
     @Param('id') id: string,

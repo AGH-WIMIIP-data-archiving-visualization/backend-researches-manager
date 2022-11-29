@@ -7,6 +7,7 @@ import { SingleResearch } from 'src/single-research/single-research.entity';
 import { SingleResearchRepository } from 'src/single-research/single-research.repository';
 import { projectToProjectResponseDto } from './Builder/projectToProjectsResponse.dto';
 import { CreateProjectDto } from './DTO/create-project.dto';
+import { GetProjectsFilterDto } from './DTO/get-projects-filter.dto';
 import { ProjectResponseDto } from './DTO/response-project.dto';
 import { Project } from './project.entity';
 import { ProjectRepository } from './project.repository';
@@ -31,10 +32,18 @@ export class ProjectService {
     return this.projectRepository.createProject(createProject, user);
   }
 
-  async getAllProjects(user: UserPayload): Promise<Project[]> {
-    const projects = await this.projectRepository.find({
-      where: { authUserId: user.sub },
-    });
+  async getAllProjects(
+    filterDto: GetProjectsFilterDto,
+    user: UserPayload,
+  ): Promise<Project[]> {
+    const projects = !filterDto.publicOnly
+      ? await this.projectRepository.find({
+          where: { authUserId: user.sub },
+        })
+      : await this.projectRepository.find({
+          where: { isPublic: !!filterDto.publicOnly },
+        });
+
     return projects;
   }
 
@@ -128,19 +137,21 @@ export class ProjectService {
   async deleteProjectById(id: string, user: UserPayload): Promise<void> {
     const project = await this.getProjectId(id, user);
 
-    project.singleResearches.forEach(async (e) => {
-      await this.singleResearchRepository.delete({
-        authUserId: user.sub,
-        id: e.id,
+    project.singleResearches &&
+      project.singleResearches.forEach(async (e) => {
+        await this.singleResearchRepository.delete({
+          authUserId: user.sub,
+          id: e.id,
+        });
       });
-    });
 
-    project.groupsResearch.forEach(async (e) => {
-      await this.groupResearchRepository.delete({
-        authUserId: user.sub,
-        id: e.id,
+    project.groupsResearch &&
+      project.groupsResearch.forEach(async (e) => {
+        await this.groupResearchRepository.delete({
+          authUserId: user.sub,
+          id: e.id,
+        });
       });
-    });
 
     const result = await this.projectRepository.delete({
       authUserId: user.sub,

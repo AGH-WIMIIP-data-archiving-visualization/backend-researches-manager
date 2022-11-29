@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { CreateProjectDto } from './DTO/create-project.dto';
@@ -18,6 +19,7 @@ import {
 } from 'src/authorization/authorization.decorator';
 import { ProjectResponseDto } from './DTO/response-project.dto';
 import { ApiCreatedResponse } from '@nestjs/swagger';
+import { GetProjectsFilterDto } from './DTO/get-projects-filter.dto';
 @UseGuards(AuthGuard('jwt'))
 @Controller('project')
 export class ProjectController {
@@ -36,8 +38,11 @@ export class ProjectController {
     type: Project,
   })
   @Get()
-  getAllProjects(@GetUser() user: UserPayload): Promise<Project[]> {
-    return this.projectService.getAllProjects(user);
+  getAllProjects(
+    @Query() filterDto: GetProjectsFilterDto,
+    @GetUser() user: UserPayload,
+  ): Promise<Project[]> {
+    return this.projectService.getAllProjects(filterDto, user);
   }
 
   @ApiCreatedResponse({

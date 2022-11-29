@@ -8,6 +8,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiCreatedResponse } from '@nestjs/swagger';
 import { Device } from './device.entity';
 import { DeviceService } from './device.service';
 import { CreateDeviceDto } from './DTO/create-device.dto';
@@ -16,7 +17,10 @@ import { CreateDeviceDto } from './DTO/create-device.dto';
 @Controller('device')
 export class DeviceController {
   constructor(private deviceService: DeviceService) {}
-
+  @ApiCreatedResponse({
+    isArray: true,
+    type: Device,
+  })
   @Get()
   getAllDevices(): Promise<Device[]> {
     return this.deviceService.getAllDevices();

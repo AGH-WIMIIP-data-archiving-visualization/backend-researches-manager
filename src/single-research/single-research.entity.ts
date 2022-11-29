@@ -30,6 +30,14 @@ export class SingleResearch {
 
   @ApiProperty()
   @Column()
+  scalingFunction: string;
+
+  @ApiProperty()
+  @Column()
+  unit: string;
+
+  @ApiProperty()
+  @Column()
   singleResearchName: string;
 
   @ApiProperty()

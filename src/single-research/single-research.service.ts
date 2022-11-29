@@ -7,7 +7,6 @@ import { Project } from 'src/project/project.entity';
 import { ProjectRepository } from 'src/project/project.repository';
 import { ConductLabjackResearchDto } from './DTO/conduct-labjack-research.dto';
 import { CreateSingleResearchkDto } from './DTO/create-single-research.dto';
-import { SingleRead } from './DTO/single-read.dto';
 import { SingleResearch } from './single-research.entity';
 import { SingleResearchRepository } from './single-research.repository';
 @Injectable()
@@ -79,6 +78,8 @@ export class SingleResearchService {
 
     research.data = conductLabjackResearchDto.data;
     research.deviceName = conductLabjackResearchDto.deviceName;
+    research.scalingFunction = conductLabjackResearchDto.scalingFunction;
+    research.unit = conductLabjackResearchDto.unit;
 
     await this.singleResearchRepository.save(research);
     return research;
